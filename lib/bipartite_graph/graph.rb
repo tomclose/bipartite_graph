@@ -26,6 +26,10 @@ module BipartiteGraph
       @nodes[key]
     end
 
+    def edge_between(a, b)
+      # horrendously inefficient
+      @edges.find {|e| e.from == a && e.to == b }
+    end
 
     def max_weight_matching
       HungarianAlgorithm.new(self).solution

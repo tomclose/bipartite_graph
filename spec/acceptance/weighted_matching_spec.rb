@@ -25,7 +25,6 @@ describe "weighted matchings" do
   end
 
   describe "simple example 2" do
-
     before do
       [
         ['x1', 'y1', 3],
@@ -46,7 +45,7 @@ describe "weighted matchings" do
       matching = graph.max_weight_matching.edges.map {|e| [e.from, e.to] }
 
       expect(matching).to match_array([
-        ['x1', 'y2'], ['x2', 'y1'], ['x3', 'y4'], ['x4', 'y3']
+        ['x2', 'y1'], ['x3', 'y2'], ['x4', 'y3'] # ['x1', 'y4'] with weight 0
       ])
     end
   end
@@ -90,7 +89,7 @@ describe "weighted matchings" do
       matching = graph.max_weight_matching.edges.map {|e| [e.from, e.to] }
 
       expect(matching).to match_array([
-        ['x2', 'y2'], ['x3', 'y3'], ['x4', 'y4']
+        ['x2', 'y1'], ['x3', 'y4'], ['x4', 'y3']
       ])
     end
   end

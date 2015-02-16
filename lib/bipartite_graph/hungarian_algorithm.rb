@@ -1,13 +1,32 @@
 module BipartiteGraph
   class HungarianAlgorithm
-    attr_reader :labelling, :matching, :graph
+    attr_reader :labelling, :matching, :graph, :original_graph
 
     def initialize(graph)
-      @graph = graph
-      @labelling = Labelling.new(graph)
+      @original_graph = graph
+      @graph = BipartiteGraph::CompleteGraph.new(graph)
+      @labelling = Labelling.new(@graph)
       @matching = create_initial_matching
     end
 
+    def solution
+      while matching.weight != labelling.total
+        root = (graph.sources - matching.sources).first
+        add_to_matching(root)
+      end
+
+      restricted_matching(matching, original_graph)
+    end
+
+    def restricted_matching(matching, graph)
+      m = Matching.new(graph)
+
+      matching.edges.each do |edge|
+        m.add_edge(edge) if edge.weight > 0  # will exclude fake nodes as they're
+                                             # only reachable from 0 edges
+      end
+      m
+    end
 
     def create_initial_matching
       eq_graph = labelling.equality_graph
@@ -115,15 +134,6 @@ module BipartiteGraph
           i.even? ? add_edge(edge) : delete_edge(edge)
         end
       end
-    end
-
-    def solution
-      while matching.weight != labelling.total
-        root = (graph.sources - matching.sources).first
-        add_to_matching(root)
-      end
-
-      matching
     end
 
     def equality_graph
