@@ -53,6 +53,10 @@ module BipartiteGraph
         @labels[node]
       end
 
+      def total
+        graph.nodes.inject(0) {|sum, node| sum + label_for(node) }
+      end
+
       def recalculate_equality_graph
         equality_graph.clear
 
@@ -94,6 +98,10 @@ module BipartiteGraph
         2 * edges.length == graph.nodes.length
       end
 
+      def weight
+        edges.inject(0) {|sum, e| sum + e.weight }
+      end
+
       def add_edge(edge)
         edges << edge
       end
@@ -110,7 +118,7 @@ module BipartiteGraph
     end
 
     def solution
-      while !matching.perfect?
+      while matching.weight != labelling.total
         root = (graph.sources - matching.sources).first
         add_to_matching(root)
       end
