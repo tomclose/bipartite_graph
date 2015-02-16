@@ -1,6 +1,8 @@
 # BipartiteGraph
 
-TODO: Write a gem description
+Finds maximum matchings in weighted bipartite graphs, using the
+[Hungarian algorithm](http://en.wikipedia.org/wiki/Hungarian_algorithm).
+
 
 ## Installation
 
@@ -18,7 +20,23 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+graph = BipartiteGraph.new
+
+graph.add_edge('x1', 'y1', 1)
+graph.add_edge('x1', 'y2', 6)
+graph.add_edge('x2', 'y2', 8)
+graph.add_edge('x2', 'y3', 6)
+graph.add_edge('x3', 'y1', 4)
+graph.add_edge('x3', 'y3', 1)
+
+matching = graph.max_weight_matching
+
+matching.edges.map { |e| [e.from, e.to] } #=> ['x1', 'y2'], ['x2', 'y3'], ['x3', 'y1']
+
+matching.edges.sum(&:weight) #=> 16
+
+```
 
 ## Contributing
 
