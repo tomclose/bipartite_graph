@@ -23,6 +23,9 @@ module BipartiteGraph
     def length
       to_a.length
     end
+    def empty?
+      to_a.empty?
+    end
 
     def from(node_or_nodes)
       from_set = Set.new(Array(node_or_nodes))
