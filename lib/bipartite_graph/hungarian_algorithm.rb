@@ -34,12 +34,14 @@ module BipartiteGraph
       matching = Matching.new(graph)
 
       eq_graph.sources.each do |source|
+        matched = false
         eq_graph.edges.from(source).each do |edge|
+          next if matched
           included = matching.has_node?(edge.to)
 
           if !included
             matching.add_edge(edge)
-            next
+            matched = true
           end
         end
       end
@@ -166,6 +168,10 @@ module BipartiteGraph
 
     def augment_labelling_using(tree)
       target_edges = graph.edges.from(tree.sources).not_to(tree.sinks)
+
+      if target_edges.empty?
+        raise "Target edge not found"
+      end
 
       slack = target_edges.map do |edge|
         labelling.label_for(edge.from) + labelling.label_for(edge.to) - edge.weight

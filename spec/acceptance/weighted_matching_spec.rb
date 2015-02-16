@@ -74,7 +74,7 @@ describe "weighted matchings" do
     # this example is constructed from simple example 2, so that the algorithm
     # will fail (unless extra edges are added)
     before do
-       [
+      [
         ['x1', 'y1', 3],
         ['x2', 'y1', 11],
         ['x3', 'y1', 10],
@@ -92,5 +92,27 @@ describe "weighted matchings" do
         ['x2', 'y1'], ['x3', 'y4'], ['x4', 'y3']
       ])
     end
+  end
+
+  describe "massively degenerate example" do
+    before do
+      [
+        ['x1', 'y1', 1],
+        ['x2', 'y1', 1],
+        ['x3', 'y1', 1],
+        ['x1', 'y2', 1],
+        ['x2', 'y2', 1],
+        ['x3', 'y2', 1],
+      ].each { |from, to, weight| graph.add_edge(from, to, weight) }
+    end
+
+    it "finds the solution" do
+      matching = graph.max_weight_matching.edges
+
+      expect(matching.length).to eq(2)
+      expect(matching.edges.inject(0) {|s, e| s + e.weight}).to eq(2)
+    end
+
+
   end
 end
